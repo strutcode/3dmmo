@@ -477,6 +477,11 @@ ajv@^6.12.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+ammojs-typed@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/ammojs-typed/-/ammojs-typed-1.0.6.tgz#07f951a55885959d0836655587e58dc9218d591e"
+  integrity sha512-ut/tD0m5eEdlJ5KK97ma6SIEGZ4FN3AJTSVz8wl6C4EtnpVQdP70lOwgDMJKsHjTohxc2/xEZl6yJfMBZNlQ5w==
+
 ansi-html-community@^0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/ansi-html-community/-/ansi-html-community-0.0.8.tgz#69fbc4d6ccbe383f9736934ae34c3f8290f1bf41"

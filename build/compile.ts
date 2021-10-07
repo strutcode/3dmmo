@@ -1,9 +1,10 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { webpack } from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 const compiler = webpack({
   mode: 'development',
+  target: 'web',
   entry: './game/index.ts',
   module: {
     rules: [
@@ -23,15 +24,25 @@ const compiler = webpack({
     }),
   ],
   resolve: {
-    extensions: ['.js', '.json', '.ts'],
+    extensions: ['.js', '.json', '.ts', '.wasm'],
+    fallback: {
+      path: false,
+      fs: false,
+    },
   },
+  output: {
+    publicPath: '/',
+  },
+  devtool: 'inline-source-map',
 })
 
 const devServer = new WebpackDevServer(
   {
     port: 13000,
+    hot: true,
+    static: './assets',
   },
-  compiler,
+  compiler as any,
 )
 
 devServer.start()
