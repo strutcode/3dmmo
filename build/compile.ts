@@ -1,3 +1,4 @@
+import path from 'path'
 import { webpack } from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
@@ -28,6 +29,9 @@ const compiler = webpack({
     fallback: {
       path: false,
       fs: false,
+    },
+    alias: {
+      'ammojs-typed': path.resolve(__dirname, '../ammo/ammo.js'),
     },
   },
   output: {

@@ -29,6 +29,8 @@ export default class Engine {
     updated: new Map<typeof Component, Set<Component>>(),
     deleted: new Map<typeof Component, Set<Component>>(),
   }
+  private lastTime = performance.now()
+  public deltaTime = 0
 
   /** Enables a system in this engine */
   public addSystem(type: typeof System) {
@@ -281,6 +283,9 @@ export default class Engine {
 
   /** Runs on every engine tick */
   public update() {
+    const time = performance.now()
+    this.deltaTime = (time - this.lastTime) / 1000
+
     this.systems.forEach((system) => system.update())
 
     // Shift changes forward
@@ -292,6 +297,8 @@ export default class Engine {
       updated: new Map<typeof Component, Set<Component>>(),
       deleted: new Map<typeof Component, Set<Component>>(),
     }
+
+    this.lastTime = time
   }
 
   /** A fast and safe way to add a component to a map */
