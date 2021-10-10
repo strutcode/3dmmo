@@ -42,6 +42,8 @@ export default class BabylonInterface {
     const light = new HemisphericLight('light', Vector3.Up(), scene)
     const camera = new FreeCamera('camera', Vector3.Zero(), scene)
 
+    camera.minZ = 0.1
+
     engine.runRenderLoop(() => {
       scene.render()
     })
