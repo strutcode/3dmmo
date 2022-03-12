@@ -1,11 +1,11 @@
 import {
   AmmoJSPlugin,
-  ArcRotateCamera,
-  Camera,
+  CascadedShadowGenerator,
+  DirectionalLight,
   Engine,
   FreeCamera,
   HemisphericLight,
-  MeshBuilder,
+  InstancedMesh,
   PhysicsImpostor,
   Quaternion,
   Scene,
@@ -26,6 +26,7 @@ enum PhysicsFilter {
 export default class BabylonInterface {
   private static engine?: Engine
   private static scene?: Scene
+  private static shadow?: CascadedShadowGenerator
   private static ammo?: typeof Ammo
   private static playerController: Ammo.btKinematicCharacterController
   private static playerTransform: Ammo.btTransform
@@ -39,10 +40,22 @@ export default class BabylonInterface {
 
     const engine = new Engine(canvas)
     const scene = new Scene(engine)
+
     const light = new HemisphericLight('light', Vector3.Up(), scene)
+    light.intensity = 0.25
+
+    const sun = new DirectionalLight(
+      'light',
+      new Vector3(0.25, -0.5, 0.25),
+      scene,
+    )
     const camera = new FreeCamera('camera', Vector3.Zero(), scene)
 
-    camera.minZ = 0.1
+    camera.minZ = 0.25
+    camera.maxZ = 200
+
+    this.shadow = new CascadedShadowGenerator(2048, sun)
+    this.shadow.bias = 0.001
 
     engine.runRenderLoop(() => {
       scene.render()
@@ -58,7 +71,17 @@ export default class BabylonInterface {
   private static async loadScene() {
     if (!this.scene) return
 
-    await SceneLoader.AppendAsync('/', 'city.glb', this.scene)
+    const newScene = await SceneLoader.AppendAsync('/', 'city.glb', this.scene)
+    newScene.meshes.forEach((mesh) => {
+      this.shadow?.addShadowCaster(mesh)
+
+      if (mesh instanceof InstancedMesh) {
+        // Do nothing for now
+      } else {
+        mesh.receiveShadows = true
+      }
+    })
+    this.shadow?.splitFrustum()
   }
 
   private static async initPhysics() {
