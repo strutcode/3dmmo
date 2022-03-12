@@ -14,7 +14,7 @@ import {
   Vector3,
 } from '@babylonjs/core'
 import '@babylonjs/loaders/glTF'
-import Ammo from '../../ammo/ammo.js'
+import Ammo from 'ammojs'
 import Vector from '../util/Vector'
 
 enum PhysicsFilter {
